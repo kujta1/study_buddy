@@ -14,7 +14,11 @@ spec:
     spec:
       containers:
       - name: llmops-app
+<<<<<<< HEAD
         image: kujta1/studybuddy:v2
+=======
+        image: kujta1/studybuddy:latest
+>>>>>>> ad21224 (all)
         ports:
         - containerPort: 8501
         env:
