@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_HUB_REPO = "dataguru97/studybuddy"
+        DOCKER_HUB_REPO = "kujta1/studybuddy"
         DOCKER_HUB_CREDENTIALS_ID = "dockerhub-token"
         IMAGE_TAG = "v${BUILD_NUMBER}"
     }
@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout Github') {
             steps {
                 echo 'Checking out code from GitHub...'
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-token', url: 'https://github.com/data-guru0/STUDY-BUDDY-AI.git']])
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-token', url: 'https://github.com/kujta1/study_buddy.git']])
             }
         }        
         stage('Build Docker Image') {
@@ -34,7 +34,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                    sed -i 's|image: dataguru97/studybuddy:.*|image: dataguru97/studybuddy:${IMAGE_TAG}|' manifests/deployment.yaml
+                    sed -i 's|image: kujta1/studybuddy:.*|image: kujta1/studybuddy:${IMAGE_TAG}|' manifests/deployment.yaml
                     """
                 }
             }
@@ -45,11 +45,11 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                         sh '''
-                        git config user.name "data-guru0"
-                        git config user.email "gyrogodnon@gmail.com"
+                        git config user.name "kujta1"
+                        git config user.email "kujtim.rahmani@gmail.com"
                         git add manifests/deployment.yaml
                         git commit -m "Update image tag to ${IMAGE_TAG}" || echo "No changes to commit"
-                        git push https://${GIT_USER}:${GIT_PASS}@github.com/data-guru0/STUDY-BUDDY-AI.git HEAD:main
+                        git push https://${GIT_USER}:${GIT_PASS}@github.com/kujta1/study_buddy.git HEAD:main
                         '''
                     }
                 }
